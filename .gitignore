@@ -4,3 +4,7 @@ node_modules
 .idea
 *.pyc
 *.sqlite3
+dist
+static
+assets
+migrations
