@@ -22,7 +22,8 @@ class Author(models.Model):
 class Comment(models.Model):
     content = models.TextField(max_length=512)
     author = models.ForeignKey(to=Author, on_delete=models.CASCADE)
-    article = models.ForeignKey(to="Article", on_delete=models.CASCADE)
+    article = models.ForeignKey(to="Article", on_delete=models.CASCADE, null=True, blank=True,
+                                     related_name='comments')
     root_comment = models.ForeignKey(to="Comment", on_delete=models.CASCADE, null=True, blank=True,
                                      related_name="answers")
     created_at = models.DateField(auto_now_add=True)
