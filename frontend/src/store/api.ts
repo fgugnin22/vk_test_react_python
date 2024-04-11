@@ -10,6 +10,7 @@ export type ListApiResponse<Entity> = {
 export type GetArticlesParams = {
   limit?: number;
   offset?: number;
+  url?: string;
 };
 
 export type Comment = {
@@ -46,11 +47,17 @@ const Api = createApi({
   refetchOnReconnect: true,
   endpoints: (builder) => ({
     getArticles: builder.query<ListApiResponse<Article>, GetArticlesParams>({
-      query: ({ limit, offset }) => {
-        limit ??= 100;
+      query: ({ limit, offset, url }) => {
+        limit ??= 3;
         offset ??= 0;
 
-        return { url: `articles/?limit=${limit}&offset=${offset}` };
+        if (url) {
+          const queryParams = url.slice(url.indexOf("?"));
+
+          return { url: `articles/${queryParams}` };
+        } else {
+          return { url: `articles/?limit=${limit}&offset=${offset}` };
+        }
       }
     }),
     getArticleById: builder.query<Article, number>({
