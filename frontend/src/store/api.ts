@@ -1,38 +1,38 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-type ListApiResponse<Entity> = {
+export type ListApiResponse<Entity> = {
   count: number;
   next: string | null;
   previous: string | null;
   results: Entity[];
 };
 
-type GetArticlesParams = {
+export type GetArticlesParams = {
   limit?: number;
   offset?: number;
 };
 
-type Comment = {
+export type Comment = {
   id: number;
   article_id: number;
   root_comment_id: number | null;
-  author_id: number;
+  author_name: number;
   content: string;
   created_at: string;
   has_child_comments: boolean;
 };
 
-type Article = {
+export type Article = {
   id: number;
   heading: string;
   content: string;
   created_at: string;
   rating: string;
-  author_id: number;
+  author_name: number;
   comments: Comment[];
 };
 
-type Author = {
+export type Author = {
   id: number;
   name: string;
 };
