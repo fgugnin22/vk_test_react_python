@@ -12,7 +12,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     article_id = serializers.PrimaryKeyRelatedField(source="article", read_only=True)
     root_comment_id = serializers.PrimaryKeyRelatedField(source="root_comment", read_only=True)
-    author_id = serializers.PrimaryKeyRelatedField(source="author", read_only=True)
+    author_id = serializers.CharField(source="author", read_only=True)
     has_child_comments = serializers.SerializerMethodField()
 
     def get_has_child_comments(self, obj):
@@ -33,7 +33,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class ArticleSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True)
-    author_id = serializers.PrimaryKeyRelatedField(source="author", read_only=True)
+    author_id = serializers.CharField(source="author", read_only=True)
 
     class Meta:
         model = Article
