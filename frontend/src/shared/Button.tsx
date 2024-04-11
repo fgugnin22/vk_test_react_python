@@ -12,7 +12,7 @@ const Button: React.FC<ButtonProps> = (props) => {
       disabled={props.disabled}
       className={
         `bg-black rounded-lg text-white px-5 py-2
-    font-medium transition hover:bg-opacity-65 hover:shadow-md disabled:!opacity-50  ` +
+    font-medium transition enabled:hover:bg-opacity-65 enabled:hover:shadow-md disabled:bg-opacity-50 ` +
         props.className
       }
     >
