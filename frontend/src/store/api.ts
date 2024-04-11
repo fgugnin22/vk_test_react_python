@@ -13,11 +13,16 @@ export type GetArticlesParams = {
   url?: string;
 };
 
+export type Paragraph = {
+  heading?: string;
+  content: string;
+};
+
 export type Comment = {
   id: number;
   article_id: number;
   root_comment_id: number | null;
-  author_name: number;
+  author_name: string;
   content: string;
   created_at: string;
   has_child_comments: boolean;
@@ -26,11 +31,11 @@ export type Comment = {
 export type Article = {
   id: number;
   heading: string;
-  content: string;
   created_at: string;
   rating: string;
   author_name: number;
   comments: Comment[];
+  paragraphs: Paragraph[];
 };
 
 export type Author = {
@@ -41,7 +46,7 @@ export type Author = {
 const Api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_ROOT_URL }),
-  tagTypes: [],
+  tagTypes: ["Article"],
   refetchOnMountOrArgChange: true,
   refetchOnFocus: false,
   refetchOnReconnect: true,
@@ -63,17 +68,29 @@ const Api = createApi({
     getArticleById: builder.query<Article, number>({
       query: (id) => {
         return { url: `articles/${id}` };
-      }
+      },
+      providesTags: ["Article"]
     }),
     getChildComments: builder.query<Comment[], number>({
       query: (id) => {
         return { url: `comments/${id}/children` };
       }
     }),
-    createAuthor: builder.mutation<Author, Omit<Author, "id">>({
+    createComment: builder.mutation<
+      Comment,
+      Omit<Comment, "id" | "has_child_comments" | "created_at">
+    >({
       query: (body) => {
-        return { url: `authors`, method: "POST", body: JSON.stringify(body) };
-      }
+        return {
+          url: `comments/`,
+          method: "POST",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        };
+      },
+      invalidatesTags: ["Article"]
     })
   })
 });

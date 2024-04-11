@@ -6,7 +6,7 @@ type ArticleRowProps = { article: Article };
 const ArticleRow: React.FC<ArticleRowProps> = (props) => {
   return (
     <Link
-      to={`/article/${props.article.id}`}
+      to={`/articles/${props.article.id}`}
       className="flex w-full transition duration-100 hover:bg-gray-100"
     >
       <p className="p-4 w-[25%] font-medium">{props.article.heading}</p>

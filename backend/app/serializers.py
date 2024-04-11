@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app.models import Article, Author, Comment
+from app.models import Article, Author, Comment, Paragraph
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -31,9 +31,16 @@ class CommentSerializer(serializers.ModelSerializer):
         )
 
 
+class ParagraphSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Paragraph
+        exclude = ("id", "article")
+
+
 class ArticleSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True)
     author_name = serializers.CharField(source="author", read_only=True)
+    paragraphs = ParagraphSerializer(many=True, read_only=True)
 
     class Meta:
         model = Article
@@ -41,9 +48,8 @@ class ArticleSerializer(serializers.ModelSerializer):
             "id",
             "comments",
             "heading",
-            "content",
+            "paragraphs",
             "created_at",
             "rating",
             "author_name",
         )
-
