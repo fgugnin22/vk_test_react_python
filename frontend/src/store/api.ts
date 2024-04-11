@@ -62,6 +62,11 @@ const Api = createApi({
       query: (id) => {
         return { url: `comments/${id}/children` };
       }
+    }),
+    createAuthor: builder.mutation<Author, Omit<Author, "id">>({
+      query: (body) => {
+        return { url: `authors`, method: "POST", body: JSON.stringify(body) };
+      }
     })
   })
 });
