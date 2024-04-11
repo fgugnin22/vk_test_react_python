@@ -8,8 +8,8 @@ type ListApiResponse<Entity> = {
 };
 
 type GetArticlesParams = {
-  limit: number;
-  offset: number;
+  limit?: number;
+  offset?: number;
 };
 
 type Comment = {
