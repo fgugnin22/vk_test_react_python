@@ -48,7 +48,7 @@ const Api = createApi({
   endpoints: (builder) => ({
     getArticles: builder.query<ListApiResponse<Article>, GetArticlesParams>({
       query: ({ limit, offset, url }) => {
-        limit ??= 3;
+        limit ??= 100;
         offset ??= 0;
 
         if (url) {
