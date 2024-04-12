@@ -53,6 +53,11 @@
    cd backend && venv/(bin|scripts)/activate && python manage.py runserver    # For Django backend
    ```
 
+## Данные от админки (/admin/)
+
+- login: `admin`
+- password: `admin`
+
 ## Вопросы
 
 - Под redux toolkit подходит RTK Query?
