@@ -49,6 +49,11 @@
    ```
 5. Start the development server:
    ```sh
-   cd frontend && yarn dev       # For React frontend
+   cd frontend && yarn start       # For React frontend
    cd backend && venv/(bin|scripts)/activate && python manage.py runserver    # For Django backend
    ```
+
+## Вопросы
+
+- Под redux toolkit подходит RTK Query?
+-
