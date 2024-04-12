@@ -31,10 +31,17 @@
    cd vk_test_react_python
    ```
 3. Install dependencies:
+
    ```sh
    cd frontend && yarn install       # For React frontend
-   cd backend && pip install -r requirements.txt   # For Django backend
+
+   cd backend && python -m venv venv # create venv
+   # or
+   cd backend && python -m venv venv # create venv
+
+   pip install -r requirements.txt   # For Django backend
    ```
+
 4. Set up the database (if applicable):
    ```sh
    python manage.py makemigrations
@@ -43,5 +50,5 @@
 5. Start the development server:
    ```sh
    cd frontend && yarn dev       # For React frontend
-   cd backend && python manage.py runserver    # For Django backend
+   cd backend && venv/(bin|scripts)/activate && python manage.py runserver    # For Django backend
    ```
