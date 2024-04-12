@@ -56,4 +56,3 @@
 ## Вопросы
 
 - Под redux toolkit подходит RTK Query?
--
