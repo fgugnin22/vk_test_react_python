@@ -41,6 +41,10 @@ class ArticleSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True)
     author_name = serializers.CharField(source="author", read_only=True)
     paragraphs = ParagraphSerializer(many=True, read_only=True)
+    comments_count = serializers.SerializerMethodField()
+
+    def get_comments_count(self, obj):
+        return Comment.objects.filter(article_id=obj.id).count()
 
     class Meta:
         model = Article
@@ -52,4 +56,5 @@ class ArticleSerializer(serializers.ModelSerializer):
             "created_at",
             "rating",
             "author_name",
+            "comments_count"
         )

@@ -1,11 +1,12 @@
 import { Button } from "@/shared";
 import { Api } from "@/store/api";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 
 type FormProps = {
   isReply: boolean;
   repliedCommentId?: number;
   articleId: number;
+  stateFn?: Dispatch<SetStateAction<boolean | undefined>>;
 };
 
 const Form: React.FC<FormProps> = (props) => {
@@ -16,17 +17,23 @@ const Form: React.FC<FormProps> = (props) => {
   const handleTextareaChange = (e: React.FormEvent<HTMLTextAreaElement>) =>
     setContent((e.target as HTMLTextAreaElement).value);
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const target = e.target as HTMLFormElement;
+
+    target.reset();
 
     const body = {
       article_id: props.articleId,
       root_comment_id: props.repliedCommentId ?? null,
-      author_name: 3,
+      author_name: "John Doe",
       content
     };
 
-    createComment(body);
+    await createComment(body);
+
+    typeof props.stateFn === "function" && props.stateFn((prev) => !prev);
   };
 
   return (

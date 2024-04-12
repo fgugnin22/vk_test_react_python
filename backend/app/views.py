@@ -13,7 +13,7 @@ class ArticleAPIView(ReadOnlyModelViewSet):
                 .prefetch_related(
                     Prefetch(lookup='comments', queryset=Comment.objects.filter(root_comment=None))
                 )
-                .order_by('created_at'))
+                .order_by('-created_at'))
 
     serializer_class = ArticleSerializer
 
@@ -37,7 +37,7 @@ class CommentAPIView(ReadOnlyModelViewSet):
         content = request.data.get("content")
         article_id = request.data.get("article_id")
         root_comment_id = request.data.get("root_comment_id", None)
-        author_id = request.data.get("author_id")
+        author_name = request.data.get("author_name")
 
         if root_comment_id is None:
             root_comment = None
@@ -46,7 +46,7 @@ class CommentAPIView(ReadOnlyModelViewSet):
 
         article = Article.objects.get(pk=article_id)
 
-        author = Author.objects.get(pk=author_id)
+        author = Author.objects.get(name=author_name)
 
         new_comment = Comment.objects.create(content=content,
                                              article=article,

@@ -32,7 +32,7 @@ const MainPage = () => {
   };
 
   return (
-    <main className="flex flex-col justify-between w-full space-y-4 text-sm sm:text-lg max-w-5xl mx-auto pb-12 md:px-3 min-h-screen">
+    <main className="flex flex-col justify-between w-full space-y-4 text-sm sm:text-lg max-w-5xl mx-auto pb-12 md:px-3 min-h-screen pt-8">
       <div className="rounded-lg border border-gray-200 dark:border-gray-800">
         <div className="grid grid-cols-1 p-4 items-center gap-4 md:grid-cols-3 md:p-6">
           <h1 className="text-2xl font-bold tracking-tight">Articles</h1>

@@ -1,5 +1,5 @@
 import { Api, Comment } from "@/store/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "../Form";
 import { useParams } from "react-router-dom";
 
@@ -10,21 +10,32 @@ type CommentComponentProps = {
 const CommentComponent: React.FC<CommentComponentProps> = (props) => {
   const articleId = Number(useParams().id);
 
-  const [getReplies] = Api.useLazyGetChildCommentsQuery();
+  const [fetchReplies] = Api.useLazyGetChildCommentsQuery();
 
   const [replies, setReplies] = useState<Comment[] | undefined>(undefined);
 
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
 
+  const [isSubmitted, setIsSubmitted] = useState<boolean | undefined>(
+    undefined
+  );
+
   const handleReplyClick = () => {
     setIsFormVisible(!isFormVisible);
+    setIsSubmitted(undefined);
   };
 
-  const handleGetRepliesButtonClick = () => {
-    getReplies(props.comment.id)
+  const getReplies = () => {
+    fetchReplies(props.comment.id)
       .unwrap()
       .then((comments) => setReplies(comments));
   };
+
+  useEffect(() => {
+    if (isSubmitted !== undefined) {
+      getReplies();
+    }
+  }, [isSubmitted]);
 
   return (
     <div
@@ -52,22 +63,26 @@ const CommentComponent: React.FC<CommentComponentProps> = (props) => {
         <span className="text-sm ml-4">at {props.comment.created_at}</span>
       </p>
       <p className="text-lg mr-9">{props.comment.content}</p>
+
+      {isFormVisible && isSubmitted === undefined && (
+        <Form
+          isReply={true}
+          repliedCommentId={props.comment.id}
+          articleId={articleId}
+          stateFn={setIsSubmitted}
+        />
+      )}
+
       {props.comment.has_child_comments && replies === undefined && (
         <button
           className="flex items-center gap-2 hover:opacity-50 transition"
-          onClick={handleGetRepliesButtonClick}
+          onClick={getReplies}
         >
           <div className="grow h-[2px] bg-gray-500"></div>See replies
           <div className="grow h-[2px] bg-gray-500"></div>
         </button>
       )}
-      {isFormVisible && (
-        <Form
-          isReply={true}
-          repliedCommentId={props.comment.id}
-          articleId={articleId}
-        />
-      )}
+
       {replies !== undefined && (
         <div className=" relative">
           <div className="absolute top-0 bottom-4 w-[2px] bg-gray-300"></div>

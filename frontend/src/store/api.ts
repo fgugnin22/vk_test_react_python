@@ -13,6 +13,13 @@ export type GetArticlesParams = {
   url?: string;
 };
 
+export type CreateCommentType = {
+  content: string;
+  article_id: number;
+  root_comment_id: number | null;
+  author_name: string;
+};
+
 export type Paragraph = {
   heading?: string;
   content: string;
@@ -34,6 +41,7 @@ export type Article = {
   created_at: string;
   rating: string;
   author_name: number;
+  comments_count: number;
   comments: Comment[];
   paragraphs: Paragraph[];
 };
@@ -67,13 +75,13 @@ const Api = createApi({
     }),
     getArticleById: builder.query<Article, number>({
       query: (id) => {
-        return { url: `articles/${id}` };
+        return { url: `articles/${id}/` };
       },
       providesTags: ["Article"]
     }),
     getChildComments: builder.query<Comment[], number>({
       query: (id) => {
-        return { url: `comments/${id}/children` };
+        return { url: `comments/${id}/children/` };
       }
     }),
     createComment: builder.mutation<
