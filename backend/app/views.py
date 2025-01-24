@@ -1,6 +1,5 @@
 from django.db.models import Prefetch
 from rest_framework.decorators import action
-from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 
@@ -13,6 +12,7 @@ class ArticleAPIView(ReadOnlyModelViewSet):
                 .prefetch_related(
                     Prefetch(lookup='comments', queryset=Comment.objects.filter(root_comment=None))
                 )
+                .prefetch_related("paragraphs")
                 .order_by('-created_at'))
 
     serializer_class = ArticleSerializer
