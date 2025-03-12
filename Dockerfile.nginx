@@ -1,1 +1,38 @@
+FROM node:18 AS frontend-build
+
+WORKDIR /usr/src/app
+
+RUN mkdir ./frontend_temp
+
+WORKDIR /usr/src/app/frontend_temp
+COPY ./frontend/package.json .
+RUN npm install -g yarn --force
+RUN yarn
+
+COPY ./frontend .
+
+RUN yarn build
+
+FROM python:3.13 as django-static-build
+
+# Set working directory for backend
+WORKDIR /usr/src/app
+
+# Copy the backend code
+COPY --chmod=0755 ./backend .
+
+RUN pip install --upgrade setuptools wheel
+RUN pip install -r requirements.txt
+RUN python manage.py collectstatic --noinput
+
 FROM nginx:latest
+
+COPY nginx.conf /etc/nginx/nginx.conf
+
+COPY --from=frontend-build /usr/src/app/frontend_temp/static/. ./static
+
+COPY --from=django-static-build /usr/src/app/static/. ./static
+
+EXPOSE 80 443
+
+CMD ["nginx", "-g", "daemon off;"]

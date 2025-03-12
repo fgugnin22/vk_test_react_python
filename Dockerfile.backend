@@ -1,33 +1,8 @@
-FROM node:18 AS frontend-build
-
-WORKDIR /usr/src/app
-
-# Install dependencies
-RUN mkdir ./frontend_temp
-
-WORKDIR /usr/src/app/frontend_temp
-COPY ./frontend/package.json .
-RUN npm install -g yarn --force
-RUN yarn
-
-# Copy the source code for the frontend
-COPY ./frontend .
-
-# Build the frontend with Vite
-RUN yarn build
-
-
-# Stage 2: Copy the built frontend into the backend directory
 FROM python:3.13
 
-# Set working directory for backend
 WORKDIR /usr/src/app
 
-# Copy the backend code
 COPY --chmod=0755 ./backend .
-
-# Copy the built frontend dist folder from the previous stage
-COPY --from=frontend-build /usr/src/app/frontend_temp/static/. ./dist
 
 RUN pip install --upgrade setuptools wheel
 RUN pip install -r requirements.txt
