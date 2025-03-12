@@ -36,8 +36,8 @@
    cd frontend && yarn install       # For React frontend
 
    cd backend && python -m venv venv # create venv
-   # or
-   cd backend && python -m venv venv # create venv
+
+   source venv/bin/activate.sh # activate venv
 
    pip install -r requirements.txt   # For Django backend
    ```

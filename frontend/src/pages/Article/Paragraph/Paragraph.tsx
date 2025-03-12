@@ -1,4 +1,4 @@
-import { Paragraph } from "@/store/api";
+import type { Paragraph } from "@/store/api";
 
 type ParagraphProps = {
   p: Paragraph;

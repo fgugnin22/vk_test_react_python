@@ -8,12 +8,12 @@ from app.serializers import ArticleSerializer, CommentSerializer, AuthorSerializ
 
 
 class ArticleAPIView(ReadOnlyModelViewSet):
-    queryset = (Article.objects
-                .prefetch_related(
-                    Prefetch(lookup='comments', queryset=Comment.objects.filter(root_comment=None))
-                )
-                .prefetch_related("paragraphs")
-                .order_by('-created_at'))
+    queryset = Article.objects.prefetch_related(
+        Prefetch(lookup='comments', queryset=Comment.objects.filter(root_comment=None)),
+        'paragraphs',
+    ).order_by(
+        '-created_at'
+    )
 
     serializer_class = ArticleSerializer
 
@@ -48,10 +48,12 @@ class CommentAPIView(ReadOnlyModelViewSet):
 
         author = Author.objects.get(name=author_name)
 
-        new_comment = Comment.objects.create(content=content,
-                                             article=article,
-                                             author=author,
-                                             root_comment=root_comment)
+        new_comment = Comment.objects.create(
+            content=content,
+            article=article,
+            author=author,
+            root_comment=root_comment,
+        )
 
         serializer = self.get_serializer(new_comment, many=False)
 
