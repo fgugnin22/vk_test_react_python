@@ -53,21 +53,23 @@ export type Author = {
 
 const Api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_ROOT_URL, prepareHeaders(headers) {
-      function getCsrfToken(name: string) {
+  baseQuery: fetchBaseQuery({
+    baseUrl: import.meta.env.VITE_API_ROOT_URL, prepareHeaders(headers) {
+      function getCsrfToken(name) {
         const cookies = document.cookie.split('; ');
         for (const cookie of cookies) {
-            const [key, value] = cookie.split('=');
-            if (key === name) {
-                return decodeURIComponent(value);
-            }
+          const [key, value] = cookie.split('=');
+          if (key === name) {
+            return decodeURIComponent(value);
+          }
         }
         return null;
-    }
-  
+      }
+
       const csrfToken = getCsrfToken('csrftoken') || '';
-      headers.append('X-Csrf-Token', csrfToken)
-  }, }),
+      headers.append('X-CSRFToken', csrfToken)
+    },
+  }),
   tagTypes: ["Article"],
   refetchOnMountOrArgChange: true,
   refetchOnFocus: false,
