@@ -25,6 +25,9 @@ CORS_ALLOW_CREDENTIALS = True
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-w$1+jdvhs#&m9u=b!fj37arvlsy=f$o)fcsq)-7n+l!2sq*_r5'
 
+CSRF_TRUSTED_ORIGINS = ['https://fedor.tw1.ru']
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
