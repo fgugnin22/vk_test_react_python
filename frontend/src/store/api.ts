@@ -53,7 +53,7 @@ export type Author = {
 
 const Api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_ROOT_URL, prepareHeaders(headers, api) {
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_ROOT_URL, prepareHeaders(headers) {
       function getCsrfToken(name: string) {
         const cookies = document.cookie.split('; ');
         for (const cookie of cookies) {
