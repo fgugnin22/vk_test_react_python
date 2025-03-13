@@ -65,7 +65,7 @@ const Api = createApi({
         return null;
     }
   
-      const csrfToken = getCsrfToken('X-Csrf-Token') || '';
+      const csrfToken = getCsrfToken('csrftoken') || '';
       headers.append('X-Csrf-Token', csrfToken)
   }, }),
   tagTypes: ["Article"],
