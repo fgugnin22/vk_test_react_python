@@ -15,10 +15,8 @@ RUN yarn build
 
 FROM python:3.13 as django-static-build
 
-# Set working directory for backend
 WORKDIR /usr/src/app
 
-# Copy the backend code
 COPY --chmod=0755 ./backend .
 
 RUN pip install --upgrade setuptools wheel
