@@ -1,64 +1,33 @@
-# Тестовое задание в ВК
+### Привет, сейчас буду рассказывать как деплоить курсовую работу
+> Деплой (deploy) — это развертывание и запуск веб-приложения или сайта в его рабочей среде, то есть на сервере или хостинге.
 
-## Технологический стек
+#### Перед тем, как приступить к самому процессу, нужно убедиться, что были выполнены следующие критерии:
+- Репозиторий разделен на 2 части - backend и frontend
+- Настроено взаимодействие между этими частями(проще говоря, проект локально запускается и работает)
+- В проекте настроена локальная установка зависимостей(backend - requirements.txt, frontend - package.json)
+- В django настроена работа с CORS и CSRF
+- В frontend'e должна быть настроена отправка csrf headers
+- В frontend'е и в backend'е должна быть настроена сборка статики
+- Работа обеих частей не должна зависеть от среды(проще говоря, должно работать и локально и удаленно)
 
-- **Frontend**:
+#### Какие дополнительные файлы конфигурации потребуются и зачем
+- ```backend/backend-entrypoint.sh``` - вспомогательный shell скрипт для запуска django сервера в уже подготовленной среде
+- ```backend/requirements.txt``` - PyPI пакеты для работы django сервера
+- ```frontend/``` - файлы, требуемые для сборки frontend в статику - в моем случае это .env и vite.config.ts
+- ```.dockerignore``` - перечисление файлов и папок, которые не должны быть включены в docker образы
+- ```docker-compose.https.yml``` - compose конфигурация для создания ssl сертификата
+- ```docker-compose.yml``` - compose конфигурация приложения
+- ```Dockerfile.backend``` - описание образа контейнера django сервера
+- ```Dockerfile.nginx``` - описание образа контейнера nginx сервера, который будет раздавать статику с SPA, админки django, обеспечивать https соединие
+- ```nginx_certbot.conf``` - конфигурация nginx для первичного создания ssl сертификата сервисом certbot
+- ```nginx.conf``` - конфигурация nginx для приложения c https соединением, маршрутизацией по SPA, API и админке django
+- ```build.sh``` - вспомогательный shell скрипт для управления контейнерами при первом запуске на сервере
+- ```release.sh``` - скрипт для обновления файлов локального репозитория и сборкой образов приложения заново
 
-  - React.js
-  - Typescript
-  - Redux Toolkit (+Query)
-  - Tailwind.css
-  - React Router v6
-  - Vite
-
-- **Backend**:
-
-  - Django
-  - Django Rest Framework
-
-- **Database**:
-
-  - Sqlite3
-
-## Installation
-
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/fgugnin22/vk_test_react_python
-   ```
-2. Navigate to the project directory:
-   ```sh
-   cd vk_test_react_python
-   ```
-3. Install dependencies:
-
-   ```sh
-   cd frontend && yarn install       # For React frontend
-
-   cd backend && python -m venv venv # create venv
-
-   source venv/bin/activate.sh # activate venv
-
-   pip install -r requirements.txt   # For Django backend
-   ```
-
-4. Set up the database (if applicable):
-   ```sh
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
-5. Start the development server:
-   ```sh
-   cd frontend && yarn start       # For React frontend
-   cd backend && venv/(bin|scripts)/activate && python manage.py runserver    # For Django backend
-   ```
-
-## Данные от админки (/admin/)
-
-- login: `admin`
-- password: `admin`
-
-## Вопросы
-
-- Под redux toolkit подходит RTK Query?
-- Чтобы добавить контент в статью, надо добавить в неё объекты параграфа
+#### Процесс развертывания
+1. Приобретаем выделенный виртуальный сервер на Ubuntu 20, 1 CPU + 1GB RAM будет достаточно
+2. Приобретаем доменное имя и привязываем его к публичному ip адресу нашего сервера и заменяем во всех файлах домен на свой
+3. С помощью кредов из панели управления вашего VDS провайдера подключаемся к серверу по ssh
+4. Клонируем репозиторий вашей работы на сервер(если нет ```git```, то его надо установить)
+5. [Устанавливаем docker + docker compose](https://github.com/docker/docker-install) - если нет ```curl```, то его тоже надо установить
+6. Заходим в папку проекта и выполняем скрипт ```build.sh "тут ваш домен"```
