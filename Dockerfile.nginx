@@ -5,6 +5,7 @@ WORKDIR /usr/src/app
 RUN mkdir ./frontend_source
 
 WORKDIR /usr/src/app/frontend_source
+
 COPY ./frontend/package.json .
 RUN npm install -g yarn --force
 RUN yarn
@@ -17,9 +18,12 @@ FROM python:3.13 as django-static-build
 
 WORKDIR /usr/src/app
 
-COPY --chmod=0755 ./backend .
+COPY ./backend/requirements.txt ./requirements.txt
 
 RUN pip install -r requirements.txt
+
+COPY --chmod=0755 ./backend .
+
 RUN python manage.py collectstatic --noinput
 
 FROM nginx:latest
