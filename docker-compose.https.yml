@@ -3,7 +3,7 @@ version: "3.1"
 services:
   nginx_verify_certbot:
     container_name: nginx_verify_certbot
-    image: nginx:latest
+    image: nginx:1.27.4-alpine
     ports:
      - "80:80"
     volumes:
