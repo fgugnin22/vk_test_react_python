@@ -15,7 +15,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['<INSERT_DOMAIN>', 'localhost']
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
@@ -25,11 +25,11 @@ CORS_ALLOW_CREDENTIALS = True
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-w$1+jdvhs#&m9u=b!fj37arvlsy=f$o)fcsq)-7n+l!2sq*_r5'
 
-CSRF_TRUSTED_ORIGINS = ['https://fedor2.tw1.ru']
+CSRF_TRUSTED_ORIGINS = ['https://<INSERT_DOMAIN>']
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Application definition
 
